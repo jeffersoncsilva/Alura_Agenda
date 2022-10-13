@@ -4,4 +4,5 @@
     <string name="act_form_hint_nome">Nome</string>
     <string name="act_form_btn_salvar">Salvar</string>
     <string name="atc_form_hint_email">E-mail</string>
+    <string name="act_form_hint_sobrenome">Sobrenome</string>
 </resources>

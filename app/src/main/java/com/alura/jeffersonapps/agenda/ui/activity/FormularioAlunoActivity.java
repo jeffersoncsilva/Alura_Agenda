@@ -11,22 +11,26 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.alura.jeffersonapps.agenda.R;
-import com.alura.jeffersonapps.agenda.dao.AlunoDao;
+import com.alura.jeffersonapps.agenda.database.AgendaDatabase;
+import com.alura.jeffersonapps.agenda.database.dao.RoomAlunoDAO;
 import com.alura.jeffersonapps.agenda.model.Aluno;
 
 public class FormularioAlunoActivity extends AppCompatActivity {
-    private EditText nome, telefone, email;
+    private EditText nome, telefone, email, sobrenome;
     private Button salvar;
     private Aluno aluno;
+    private RoomAlunoDAO dao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_formulario_aluno);
         setTitle("Novo aluno");
+        dao = AgendaDatabase.getInstance(this).getRoomAlunoDAO();
         realizaBuscaDasViews();
         defineAcaoClickSalvarAluno();
         pegaExtrasDeEdicao();
+
     }
 
     @Override
@@ -46,9 +50,9 @@ public class FormularioAlunoActivity extends AppCompatActivity {
     private void salvarAluno(){
         preencheDadosAluno();
         if(aluno.temIdValido())
-            new AlunoDao().edita(aluno);
+            dao.edita(aluno);
         else
-            new AlunoDao().salva(aluno);
+            dao.salva(aluno);
         finish();
     }
 
@@ -58,12 +62,14 @@ public class FormularioAlunoActivity extends AppCompatActivity {
 
     private void preencheDadosAluno() {
         String _nome = nome.getText().toString();
+        String _sobrenome = sobrenome.getText().toString();
         String _telefone = telefone.getText().toString();
         String _email = email.getText().toString();
         if(aluno == null){
-            aluno = new Aluno(_nome, _telefone, _email);
+            aluno = new Aluno(_nome, _telefone, _email, _sobrenome);
         }else {
             aluno.setNome(_nome);
+            aluno.setSobrenome(_sobrenome);
             aluno.setTelefone(_telefone);
             aluno.setEmail(_email);
         }
@@ -74,6 +80,7 @@ public class FormularioAlunoActivity extends AppCompatActivity {
         nome = findViewById(R.id.edtNome);
         telefone = findViewById(R.id.edtTelefone);
         email = findViewById(R.id.edtEMail);
+        sobrenome = findViewById(R.id.edtSobreNome);
     }
 
     private void pegaExtrasDeEdicao() {
@@ -81,6 +88,7 @@ public class FormularioAlunoActivity extends AppCompatActivity {
         if (extras.hasExtra(ConstantesActivities.CHAVE_ALUNO)) {
             aluno = (Aluno) extras.getSerializableExtra(ConstantesActivities.CHAVE_ALUNO);
             nome.setText(aluno.getNome());
+            sobrenome.setText((aluno.getSobrenome()));
             telefone.setText(aluno.getTelefone());
             email.setText(aluno.getEmail());
             setTitle("Editando Aluno");
