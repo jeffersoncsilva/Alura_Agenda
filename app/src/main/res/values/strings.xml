@@ -1,8 +1,16 @@
 <resources>
     <string name="app_name">Agenda</string>
-    <string name="act_form_telefone">Telefone</string>
+    <string name="act_form_telefone">Celular</string>
     <string name="act_form_hint_nome">Nome</string>
     <string name="act_form_btn_salvar">Salvar</string>
     <string name="atc_form_hint_email">E-mail</string>
     <string name="act_form_hint_sobrenome">Sobrenome</string>
+    <string name="act_form_telefone_2">Fixo</string>
+    <string name="lista_alunos_activity_titulo">Lista de alunos</string>
+    <string name="dialog_remove_aluno_title">Removendo aluno</string>
+    <string name="dialog_remove_aluno_mensagem">Tem certeza que quer remover o aluno?</string>
+    <string name="dialog_positive_option">Sim</string>
+    <string name="dialog_negative_option"></string>
+    <string name="activity_formulario_aluno_titulo_adiciona">Novo aluno</string>
+    <string name="activity_formulario_aluno_titulo_editar">Editando Aluno</string>
 </resources>

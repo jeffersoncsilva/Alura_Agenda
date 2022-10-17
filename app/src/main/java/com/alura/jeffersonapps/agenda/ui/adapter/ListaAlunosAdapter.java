@@ -5,10 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
 
 import com.alura.jeffersonapps.agenda.R;
+import com.alura.jeffersonapps.agenda.asynctask.BuscaPrimeiroTelefoneDoAluno;
+import com.alura.jeffersonapps.agenda.database.AgendaDatabase;
+import com.alura.jeffersonapps.agenda.database.dao.TelefoneDao;
+import com.alura.jeffersonapps.agenda.databinding.ItemAlunoBinding;
 import com.alura.jeffersonapps.agenda.model.Aluno;
-import com.alura.jeffersonapps.agenda.ui.viewholders.ListaAlunosViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +20,11 @@ import java.util.List;
 public class ListaAlunosAdapter extends BaseAdapter {
     private final List<Aluno> alunos = new ArrayList<>();
     private final Context context;
-//887.109.121-34
-    //17462824
+    private final TelefoneDao dao;
+
     public ListaAlunosAdapter(Context context) {
         this.context = context;
+        dao = AgendaDatabase.getInstance(context).getTelefoneDao();
     }
 
     @Override
@@ -40,8 +45,9 @@ public class ListaAlunosAdapter extends BaseAdapter {
     @Override
     public View getView(int posicao, View view, ViewGroup viewGroup) {
         if(view == null) {
-            view = LayoutInflater.from(this.context).inflate(R.layout.item_aluno, viewGroup, false);
-            view.setTag(new ListaAlunosViewHolder(view));
+            ItemAlunoBinding binding = ItemAlunoBinding.inflate(LayoutInflater.from(context), viewGroup, false);
+            view = binding.getRoot();
+            view.setTag(new ListaAlunosViewHolder(binding));
         }
         vinculaDadosNaView(view, posicao);
         return view;
@@ -51,7 +57,7 @@ public class ListaAlunosAdapter extends BaseAdapter {
         ListaAlunosViewHolder holder = (ListaAlunosViewHolder) v.getTag();
         Aluno a = getItem(posicao);
         holder.nome.setText(a.getNomeCompleto());
-        holder.telefone.setText(a.dataFormatada());
+        new BuscaPrimeiroTelefoneDoAluno(dao, a.getId(), telefoneEncontrado -> holder.telefone.setText(telefoneEncontrado.getNumero())).execute();
     }
 
     public void atualizaAlunos(List<Aluno> alunos){
@@ -63,5 +69,15 @@ public class ListaAlunosAdapter extends BaseAdapter {
     public void remove(Aluno aluno) {
         this.alunos.remove(aluno);
         notifyDataSetChanged();
+    }
+
+    public class ListaAlunosViewHolder {
+        public final TextView nome;
+        public final TextView telefone;
+
+        public ListaAlunosViewHolder(ItemAlunoBinding binding){
+            nome = binding.itemAlunoNome;
+            telefone = binding.itemAlunoTelefone;
+        }
     }
 }

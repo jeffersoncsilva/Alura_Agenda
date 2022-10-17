@@ -11,9 +11,9 @@ import com.alura.jeffersonapps.agenda.model.Aluno;
 import java.util.List;
 
 @Dao
-public interface RoomAlunoDAO {
+public interface AlunoDAO {
     @Insert
-    void salva(Aluno aluno);
+    Long salva(Aluno aluno);
 
     @Query("select * from aluno")
     List<Aluno> todos();

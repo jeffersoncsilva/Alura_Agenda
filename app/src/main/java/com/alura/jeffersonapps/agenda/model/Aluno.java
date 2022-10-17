@@ -15,19 +15,16 @@ public class Aluno implements Serializable {
     @PrimaryKey(autoGenerate = true)
     private int id = 0;
     private String nome;
-    private String telefone;
     private String email;
     private String sobrenome;
     private Calendar momentoDeCadastro = Calendar.getInstance();
 
-    public Aluno(){
 
-    }
+    public Aluno(){}
 
     @Ignore
-    public Aluno(String nome, String telefone, String email, String sobrenome) {
+    public Aluno(String nome, String sobrenome,  String email) {
         this.nome = nome;
-        this.telefone = telefone;
         this.email = email;
         this.sobrenome = sobrenome;
     }
@@ -60,16 +57,8 @@ public class Aluno implements Serializable {
         this.nome = nome;
     }
 
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
-
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getTelefone() {
-        return telefone;
     }
 
     public String getEmail() {
